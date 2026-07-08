@@ -140,16 +140,18 @@ function RegexModule() {
               Opérateurs : <code>|</code> ou <code>+</code> (union), concaténation implicite,{" "}
               <code>*</code> (étoile), <code>( )</code>, <code>ε</code> (mot vide).
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="space-y-2">
               {getRegexExamples().map((ex) => (
-                <button
-                  key={ex.id}
-                  onClick={() => setPattern(ex.regex)}
-                  className="rounded-full border bg-muted/40 px-2.5 py-1 font-mono text-xs transition-colors hover:bg-accent hover:text-accent-foreground"
-                  title={ex.title}
-                >
-                  {ex.regex}
-                </button>
+                <div key={ex.id} className="rounded-lg border bg-muted/30 p-2">
+                  <button
+                    onClick={() => setPattern(ex.regex)}
+                    className="w-full rounded-md border bg-card px-2.5 py-1 text-left font-mono text-xs transition-colors hover:bg-accent hover:text-accent-foreground"
+                    title={ex.title}
+                  >
+                    {ex.regex}
+                  </button>
+                  <TestChips tests={ex.tests} className="pt-1.5" />
+                </div>
               ))}
             </div>
           </section>
