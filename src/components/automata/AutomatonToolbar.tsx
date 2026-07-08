@@ -68,7 +68,7 @@ export function AutomatonToolbar({ onExportPng, onFit }: Props) {
             <BookOpen className="h-4 w-4" /> Exemples
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-72">
+        <DropdownMenuContent align="start" className="max-h-[70vh] w-80 overflow-y-auto">
           <DropdownMenuLabel>Charger un exemple</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {examples.map((ex) => (
@@ -78,10 +78,11 @@ export function AutomatonToolbar({ onExportPng, onFit }: Props) {
                 setCurrent(ex.make(), "Exemple chargé");
                 toast.success(`Exemple : ${ex.title}`);
               }}
-              className="flex flex-col items-start gap-0.5"
+              className="flex flex-col items-start gap-1"
             >
               <span className="font-medium">{ex.title}</span>
               <span className="text-xs text-muted-foreground">{ex.description}</span>
+              <TestChips tests={ex.tests} className="pt-0.5" />
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
