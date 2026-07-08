@@ -7,6 +7,7 @@ import {
   Automaton,
   AutomatonState,
   EPSILON,
+  TestCase,
   Transition,
   finalStateIds,
   initialStateIds,
