@@ -4,6 +4,7 @@ import { useAutomataStore } from "@/lib/automata/store";
 import { autoLayout } from "@/lib/automata/algorithms";
 import { downloadJson } from "@/lib/automata/storage";
 import { getExamples } from "@/lib/automata/examples";
+import { TestChips } from "@/components/automata/TestChips";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
