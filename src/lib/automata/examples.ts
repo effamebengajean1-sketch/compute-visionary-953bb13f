@@ -183,7 +183,7 @@ export function getExamples(): ExampleAutomaton[] {
       id: "third-last-a",
       title: "AFN — 3ᵉ symbole avant la fin = « a »",
       description: "AFN sur {a, b} : les mots dont le 3ᵉ symbole en partant de la fin est a.",
-      tests: [t("abb", true), t("aaa", true), t("abab", true), t("aab", true), t("baa", false), t("ab", false), t("bab", false)],
+      tests: [t("abb", true), t("aaa", true), t("aaba", true), t("aab", true), t("baa", false), t("ab", false), t("bab", false)],
       make: () =>
         build(
           "3ᵉ avant la fin = a (AFN)",
