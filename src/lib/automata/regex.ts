@@ -652,23 +652,140 @@ export function arden(a: Automaton): RegexBuildResult {
 }
 
 // ---------------------------------------------------------------------------
-// Exemples de regex
+// Exemples de regex (avec chaînes de test et résultats attendus)
 // ---------------------------------------------------------------------------
-export function getRegexExamples(): { id: string; title: string; regex: string }[] {
+export interface RegexExample {
+  id: string;
+  title: string;
+  regex: string;
+  tests: TestCase[];
+}
+
+const rt = (input: string, accept: boolean): TestCase => ({ input, accept });
+
+export function getRegexExamples(): RegexExample[] {
   return [
-    { id: "ab-star", title: "(a|b)* — tous les mots", regex: "(a|b)*" },
-    { id: "ends-ab", title: "(a|b)*ab — finit par ab", regex: "(a|b)*ab" },
-    { id: "a-star-b", title: "a*b* — des a puis des b", regex: "a*b*" },
-    { id: "contains-ab", title: "(a|b)*ab(a|b)* — contient ab", regex: "(a|b)*ab(a|b)*" },
-    { id: "optional", title: "a(ba)* — alternance", regex: "a(ba)*" },
-    { id: "aa-or-bb", title: "(aa|bb)(a|b)* — commence par aa ou bb", regex: "(aa|bb)(a|b)*" },
-    { id: "no-aa", title: "b*(ab*)* — sans deux a consécutifs", regex: "b*(ab*)*" },
-    { id: "even-block", title: "(ab|ba)* — blocs ab/ba", regex: "(ab|ba)*" },
-    { id: "abc", title: "(a|b|c)*abc — finit par abc (3 symboles)", regex: "(a|b|c)*abc" },
-    { id: "triple", title: "(a(a|b))* — a suivi de a ou b", regex: "(a(a|b))*" },
-    { id: "nested", title: "((a|b)(a|b))* — longueur paire", regex: "((a|b)(a|b))*" },
-    { id: "complex-1", title: "a*b*a*b* — 4 blocs alternés", regex: "a*b*a*b*" },
-    { id: "complex-2", title: "(a|ε)(ba)*b* — mot vide optionnel", regex: "(a|ε)(ba)*b*" },
-    { id: "complex-3", title: "((ab)*|(ba)*)c — grande union", regex: "((ab)*|(ba)*)c" },
+    {
+      id: "ab-star",
+      title: "(a|b)* — tous les mots",
+      regex: "(a|b)*",
+      tests: [rt("", true), rt("abba", true), rt("aaa", true), rt("b", true)],
+    },
+    {
+      id: "ends-ab",
+      title: "(a|b)*ab — finit par ab",
+      regex: "(a|b)*ab",
+      tests: [rt("ab", true), rt("aab", true), rt("abab", true), rt("ba", false), rt("a", false), rt("", false)],
+    },
+    {
+      id: "a-star-b",
+      title: "a*b* — des a puis des b",
+      regex: "a*b*",
+      tests: [rt("aabb", true), rt("", true), rt("b", true), rt("ba", false), rt("aba", false)],
+    },
+    {
+      id: "contains-ab",
+      title: "(a|b)*ab(a|b)* — contient ab",
+      regex: "(a|b)*ab(a|b)*",
+      tests: [rt("ab", true), rt("aabb", true), rt("aaab", true), rt("ba", false), rt("bba", false)],
+    },
+    {
+      id: "optional",
+      title: "a(ba)* — alternance",
+      regex: "a(ba)*",
+      tests: [rt("a", true), rt("aba", true), rt("ababa", true), rt("", false), rt("ab", false), rt("b", false)],
+    },
+    {
+      id: "aa-or-bb",
+      title: "(aa|bb)(a|b)* — commence par aa ou bb",
+      regex: "(aa|bb)(a|b)*",
+      tests: [rt("aa", true), rt("bb", true), rt("aab", true), rt("bba", true), rt("ab", false), rt("a", false)],
+    },
+    {
+      id: "no-aa",
+      title: "(b|ab)*(a|ε) — sans deux a consécutifs",
+      regex: "(b|ab)*(a|ε)",
+      tests: [rt("", true), rt("ab", true), rt("aba", true), rt("b", true), rt("aa", false), rt("aab", false)],
+    },
+    {
+      id: "even-block",
+      title: "(ab|ba)* — blocs ab/ba",
+      regex: "(ab|ba)*",
+      tests: [rt("", true), rt("ab", true), rt("ba", true), rt("abba", true), rt("aba", false), rt("a", false)],
+    },
+    {
+      id: "abc",
+      title: "(a|b|c)*abc — finit par abc (3 symboles)",
+      regex: "(a|b|c)*abc",
+      tests: [rt("abc", true), rt("aabc", true), rt("cabc", true), rt("ab", false), rt("abca", false)],
+    },
+    {
+      id: "triple",
+      title: "(a(a|b))* — a suivi de a ou b",
+      regex: "(a(a|b))*",
+      tests: [rt("", true), rt("aa", true), rt("ab", true), rt("aaab", true), rt("a", false), rt("ba", false)],
+    },
+    {
+      id: "nested",
+      title: "((a|b)(a|b))* — longueur paire",
+      regex: "((a|b)(a|b))*",
+      tests: [rt("", true), rt("aa", true), rt("abab", true), rt("a", false), rt("aba", false)],
+    },
+    {
+      id: "complex-1",
+      title: "a*b*a*b* — 4 blocs alternés",
+      regex: "a*b*a*b*",
+      tests: [rt("", true), rt("aabb", true), rt("abab", true), rt("bab", true), rt("baba", false)],
+    },
+    {
+      id: "complex-2",
+      title: "(a|ε)(ba)*b* — mot vide optionnel",
+      regex: "(a|ε)(ba)*b*",
+      tests: [rt("", true), rt("a", true), rt("aba", true), rt("bab", true), rt("ab", true), rt("aa", false)],
+    },
+    {
+      id: "complex-3",
+      title: "((ab)*|(ba)*)c — grande union",
+      regex: "((ab)*|(ba)*)c",
+      tests: [rt("c", true), rt("abc", true), rt("bac", true), rt("ababc", true), rt("ab", false), rt("abbac", false)],
+    },
+    // ----- Nouveaux exemples avancés -----
+    {
+      id: "even-pairs",
+      title: "(aa|bb)* — répétitions de aa/bb",
+      regex: "(aa|bb)*",
+      tests: [rt("", true), rt("aa", true), rt("aabb", true), rt("bbaa", true), rt("ab", false), rt("a", false)],
+    },
+    {
+      id: "a-word-a",
+      title: "a(a|b)*a — commence et finit par a",
+      regex: "a(a|b)*a",
+      tests: [rt("aa", true), rt("aba", true), rt("abba", true), rt("a", false), rt("ab", false), rt("ba", false)],
+    },
+    {
+      id: "third-last-a",
+      title: "(a|b)*a(a|b)(a|b) — 3ᵉ avant la fin = a",
+      regex: "(a|b)*a(a|b)(a|b)",
+      tests: [rt("abb", true), rt("aaa", true), rt("baab", true), rt("ab", false), rt("bab", false)],
+    },
+    {
+      id: "bin-end-00",
+      title: "(0|1)*00 — binaire finissant par 00",
+      regex: "(0|1)*00",
+      tests: [rt("00", true), rt("100", true), rt("1000", true), rt("0", false), rt("01", false), rt("", false)],
+    },
+    {
+      id: "ab-then-ba",
+      title: "(ab)*(ba)* — blocs ab puis blocs ba",
+      regex: "(ab)*(ba)*",
+      tests: [rt("", true), rt("ab", true), rt("ba", true), rt("abba", true), rt("baba", true), rt("aba", false)],
+    },
+    {
+      id: "ends-abb",
+      title: "(a|b)*abb — finit par abb",
+      regex: "(a|b)*abb",
+      tests: [rt("abb", true), rt("aabb", true), rt("babb", true), rt("ab", false), rt("abba", false)],
+    },
   ];
 }
+
