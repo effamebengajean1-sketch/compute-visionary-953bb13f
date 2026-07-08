@@ -29,6 +29,12 @@ export interface Automaton {
 
 export type AutomatonKind = "AFD" | "AFN" | "ε-AFN";
 
+/** Cas de test pédagogique : une chaîne et le résultat attendu (accepté ou rejeté). */
+export interface TestCase {
+  input: string;
+  accept: boolean;
+}
+
 export interface AutomatonProperties {
   stateCount: number;
   transitionCount: number;
