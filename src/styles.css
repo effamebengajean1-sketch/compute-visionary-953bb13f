@@ -71,6 +71,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --color-violet: var(--violet);
+  --color-violet-foreground: var(--violet-foreground);
+  --color-brand-cyan: var(--brand-cyan);
+
   --shadow-soft: 0 1px 2px oklch(0.4 0.05 265 / 0.06), 0 8px 24px -12px oklch(0.4 0.05 265 / 0.18);
   --shadow-panel: 0 1px 0 oklch(1 0 0 / 0.6) inset, 0 12px 40px -20px oklch(0.4 0.05 265 / 0.25);
 }
@@ -91,6 +95,10 @@
 
   --secondary: oklch(0.95 0.02 265);
   --secondary-foreground: oklch(0.32 0.07 265);
+
+  --violet: oklch(0.55 0.22 295);
+  --violet-foreground: oklch(0.99 0.005 295);
+  --brand-cyan: oklch(0.72 0.13 220);
 
   --muted: oklch(0.96 0.008 250);
   --muted-foreground: oklch(0.52 0.03 260);
@@ -147,6 +155,10 @@
 
   --secondary: oklch(0.3 0.04 265);
   --secondary-foreground: oklch(0.95 0.01 265);
+
+  --violet: oklch(0.68 0.2 295);
+  --violet-foreground: oklch(0.16 0.03 295);
+  --brand-cyan: oklch(0.78 0.13 220);
 
   --muted: oklch(0.28 0.03 265);
   --muted-foreground: oklch(0.7 0.03 260);
@@ -215,3 +227,54 @@
     font-family: var(--font-mono);
   }
 }
+
+/* ── Landing page helpers ─────────────────────────────────── */
+
+/* Scroll-reveal entrance. Content is always visible; when JS + IntersectionObserver
+   are active it starts slightly offset and eases in. Falls back to visible. */
+@utility reveal {
+  animation: reveal-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/* Soft glass surface */
+@utility glass {
+  background: color-mix(in oklab, var(--color-card) 70%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+}
+
+/* Brand gradient text */
+@utility text-gradient {
+  background-image: linear-gradient(
+    120deg,
+    var(--color-primary),
+    var(--color-brand-cyan),
+    var(--color-violet)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-24px) translateX(12px); }
+}
+@utility animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(20px) translateX(-16px); }
+}
+@utility animate-float-slower {
+  animation: float-slower 12s ease-in-out infinite;
+}
+
