@@ -25,10 +25,11 @@ export function Reveal({ delay = 0, as = "div", className, style, children, ...r
     <Tag
       ref={ref}
       className={cn("reveal", inView && "is-visible", className)}
-      style={{ transitionDelay: `${delay}ms`, ...style }}
+      style={{ animationDelay: `${delay}ms`, ...style }}
       {...rest}
     >
       {children}
     </Tag>
   );
+
 }
