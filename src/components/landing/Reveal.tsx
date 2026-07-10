@@ -16,6 +16,11 @@ export function Reveal({ delay = 0, as = "div", className, style, children, ...r
   const { ref, inView } = useInView<HTMLDivElement>();
   const Tag = as as "div";
 
+  React.useEffect(() => {
+    document.documentElement.classList.add("js-ready");
+  }, []);
+
+
   return (
     <Tag
       ref={ref}
