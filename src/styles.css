@@ -233,17 +233,11 @@
 /* Scroll-reveal entrance. Content is always visible; when JS + IntersectionObserver
    are active it starts slightly offset and eases in. Falls back to visible. */
 @utility reveal {
-  animation: reveal-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: reveal-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 @keyframes reveal-in {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  @keyframes reveal-in {
-    from { opacity: 1; transform: none; }
-    to { opacity: 1; transform: none; }
-  }
 }
 
 
