@@ -118,6 +118,17 @@ export function AlgorithmsPanel() {
       </section>
 
       <section className="space-y-2">
+        <SectionTitle>Automate → Expression régulière</SectionTitle>
+        <Button variant="accent" className="w-full justify-start" onClick={runArden}>
+          <Equal className="h-4 w-4" /> Convertir avec le lemme d'Arden
+        </Button>
+        <p className="text-xs text-muted-foreground">
+          Construit le système d'équations des états, applique le lemme d'Arden
+          (X = A·X ∪ B ⇒ X = A*·B), effectue les substitutions et affiche l'expression finale.
+        </p>
+      </section>
+
+      <section className="space-y-2">
         <SectionTitle>Analyse & propriétés</SectionTitle>
         <div className="grid grid-cols-2 gap-2">
           <Algo onClick={() => run("Accessibilité", () => accessibility(current))}>
