@@ -30,6 +30,7 @@ export interface ResultData {
   steps: string[];
   recognition?: RecognitionResult;
   automaton?: Automaton;
+  regex?: string;
 }
 
 interface AutomataState {

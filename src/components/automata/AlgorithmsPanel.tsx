@@ -14,9 +14,10 @@ import {
   removeEpsilon,
   trim,
 } from "@/lib/automata/algorithms";
+import { arden } from "@/lib/automata/regex";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles, Equal } from "lucide-react";
 import { toast } from "sonner";
 
 export function AlgorithmsPanel() {
@@ -36,6 +37,28 @@ export function AlgorithmsPanel() {
       setResult({ title, message: r.message, steps: r.steps, automaton: r.automaton });
       setHighlight([]);
       log(title, r.message);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur lors de l'exécution.");
+    }
+  };
+
+  const runArden = () => {
+    if (current.states.length === 0) {
+      toast.error("Ajoutez d'abord des états.");
+      return;
+    }
+    try {
+      const r = arden(current);
+      setResult({
+        title: "Conversion en expression régulière (Arden)",
+        message: r.message,
+        steps: r.steps,
+        regex: r.regex,
+      });
+      setHighlight([]);
+      log("Arden", r.message);
+      if (r.regex) toast.success(`Expression régulière : ${r.regex}`);
+      else toast.error(r.message);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Erreur lors de l'exécution.");
     }
@@ -92,6 +115,17 @@ export function AlgorithmsPanel() {
           <Algo onClick={() => run("Émondage", () => trim(current))}>Émonder</Algo>
           <Algo onClick={() => run("Complément", () => complement(current))}>Complément</Algo>
         </div>
+      </section>
+
+      <section className="space-y-2">
+        <SectionTitle>Automate → Expression régulière</SectionTitle>
+        <Button variant="accent" className="w-full justify-start" onClick={runArden}>
+          <Equal className="h-4 w-4" /> Convertir avec le lemme d'Arden
+        </Button>
+        <p className="text-xs text-muted-foreground">
+          Construit le système d'équations des états, applique le lemme d'Arden
+          (X = A·X ∪ B ⇒ X = A*·B), effectue les substitutions et affiche l'expression finale.
+        </p>
       </section>
 
       <section className="space-y-2">

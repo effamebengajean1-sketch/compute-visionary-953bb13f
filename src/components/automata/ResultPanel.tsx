@@ -40,6 +40,15 @@ export function ResultPanel({ result }: Props) {
         )}
       </div>
 
+      {result.regex && (
+        <div className="space-y-1">
+          <p className="text-xs font-medium text-muted-foreground">Expression régulière obtenue</p>
+          <div className="rounded-lg border border-accent/40 bg-accent/10 p-3 font-mono text-sm font-semibold text-accent-foreground">
+            {result.regex}
+          </div>
+        </div>
+      )}
+
       {rec ? (
         <div
           className={`flex items-center gap-2 rounded-lg border p-3 text-sm font-medium ${
