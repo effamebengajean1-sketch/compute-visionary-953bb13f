@@ -42,6 +42,28 @@ export function AlgorithmsPanel() {
     }
   };
 
+  const runArden = () => {
+    if (current.states.length === 0) {
+      toast.error("Ajoutez d'abord des états.");
+      return;
+    }
+    try {
+      const r = arden(current);
+      setResult({
+        title: "Conversion en expression régulière (Arden)",
+        message: r.message,
+        steps: r.steps,
+        regex: r.regex,
+      });
+      setHighlight([]);
+      log("Arden", r.message);
+      if (r.regex) toast.success(`Expression régulière : ${r.regex}`);
+      else toast.error(r.message);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Erreur lors de l'exécution.");
+    }
+  };
+
   const labelToId = (label: string) =>
     current.states.find((s) => s.label === label)?.id;
 
