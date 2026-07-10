@@ -14,9 +14,10 @@ import {
   removeEpsilon,
   trim,
 } from "@/lib/automata/algorithms";
+import { arden } from "@/lib/automata/regex";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles, Equal } from "lucide-react";
 import { toast } from "sonner";
 
 export function AlgorithmsPanel() {
