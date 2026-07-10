@@ -230,27 +230,31 @@
 
 /* ── Landing page helpers ─────────────────────────────────── */
 
-/* Scroll-reveal: hidden until .is-visible is toggled by IntersectionObserver */
+/* Scroll-reveal: only hides while JS is active and the element is off-screen.
+   Content is visible by default so it never gets stuck hidden (SSR / no JS). */
 @utility reveal {
-  opacity: 0;
-  transform: translateY(28px);
   transition:
     opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.js-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
+html.js-ready .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  html.js-ready .reveal {
     opacity: 1;
     transform: none;
     transition: none;
   }
 }
+
 
 /* Soft glass surface */
 @utility glass {
